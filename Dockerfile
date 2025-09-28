@@ -22,5 +22,8 @@ COPY --from=build /app/build/libs/*.jar app.jar
 # Portu aç
 EXPOSE 8082
 
+# **Docker için profile ayarı**
+ENV SPRING_PROFILES_ACTIVE=docker
+
 # Uygulamayı çalıştır
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
