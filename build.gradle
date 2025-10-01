@@ -16,7 +16,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+	implementation 'org.slf4j:slf4j-api:2.0.9'
+	implementation 'ch.qos.logback:logback-classic:1.4.11'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 tasks.named('test') {
