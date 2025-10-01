@@ -1,4 +1,4 @@
-name: Order Service CI/CD
+name: User Service CI/CD
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
-          workload_identity_provider: ${{ secrets.GCP_PROVIDER_ORDER }}
+          workload_identity_provider: ${{ secrets.GCP_PROVIDER_USER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
 
       - name: Set up Docker
@@ -26,8 +26,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t asia-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/socialmedia/order-service:son ./order-service
-          docker push asia-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/socialmedia/order-service:son
+          docker build -t asia-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/socialmedia/user-service:son .
+          docker push asia-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/socialmedia/user-service:son
 
   deploy:
     needs: build-and-push
@@ -42,15 +42,17 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
-          workload_identity_provider: ${{ secrets.GCP_PROVIDER_ORDER }}
+          workload_identity_provider: ${{ secrets.GCP_PROVIDER_USER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
 
       - name: Set up kubectl
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ secrets.GCP_PROJECT }}
+          location: ${{ secrets.GKE_LOCATION }}
+          cluster_name: ${{ secrets.GKE_CLUSTER }}
           export_default_credentials: true
 
-      - name: Deploy Order Service
+      - name: Deploy User Service
         run: |
-          kubectl apply -f ./k8s/order-service.yaml
+          kubectl apply -f ./k8s/user-service.yaml
